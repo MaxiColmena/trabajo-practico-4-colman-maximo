@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node --watch ./src/app.js"
-  },
+    "dev": "node ./src/app.js --watch"
+  }, 
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MaxiColmena/trabajo-practico-4-colman-maximo.git"

@@ -17,10 +17,10 @@ export const createCharacter = async(req, res) => {
 
     try {
         //Validacion para que los datos no se reciban vacios.
-        if(name === undefined) return res.status(400).json({errorMessage: "Debe completar el campo 'name', no puede estar vacio."})
-        if(ki === undefined) return res.status(400).json({errorMessage: "Debe completar el campo'ki ', no puede estar vacio."})
-        if(race === undefined) return res.status(400).json({errorMessage: "Debe completar el campo 'race', no puede estar vacio."})
-        if(gender === undefined) return res.status(400).json({errorMessage: "Debe completar el campo 'gender', no puede estar vacio."})
+        if(name === undefined || name === "") return res.status(400).json({errorMessage: "Debe completar el campo 'name', no puede estar vacio."})
+        if(ki === undefined || name === "") return res.status(400).json({errorMessage: "Debe completar el campo'ki ', no puede estar vacio."})
+        if(race === undefined || name === "") return res.status(400).json({errorMessage: "Debe completar el campo 'race', no puede estar vacio."})
+        if(gender === undefined || name === "") return res.status(400).json({errorMessage: "Debe completar el campo 'gender', no puede estar vacio."})
 
         //Validación para que los nombres sean únicos y no se repitan para que no haya incongruencias
         const nameUnique = await Character.findOne({where: {name}});
@@ -53,9 +53,9 @@ export const createCharacter = async(req, res) => {
 
 export const getAllCharacters = async(req, res) => {
     try {
-        const Characters = await Character.findAll();
-
-        if(!Characters) return res.json({Message: error.message});
+        const characters = await Character.findAll();
+        if(characters.length === 0) return res.json({Message: "No existen personajes en la base de datos"});
+        res.json(characters)
     } catch (error) {
         res.status(500).json({message: error.message});
     }
@@ -63,8 +63,8 @@ export const getAllCharacters = async(req, res) => {
 
 export const getCharacterById = async(req, res) => {
     try {
-        const Character = await Character.findByPk(req.params.id);
-        if(personaje) return res.status(200).json(personaje);
+        const character = await Character.findByPk(req.params.id);
+        if(character) return res.status(200).json(character);
 
         return res.status(404).json({Message: "El personaje no existe en la base de datos."});
 
