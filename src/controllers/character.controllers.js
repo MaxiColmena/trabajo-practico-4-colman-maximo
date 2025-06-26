@@ -52,7 +52,7 @@ export const createCharacter = async(req, res) => {
 
 export const getAllCharacters = async(req, res) => {
     try {
-        const personajes = await Character.findAll();
+        const Characters = await Character.findAll();
 
         if(!personajes) return res.json({Message: error.message});
     } catch (error) {
@@ -62,13 +62,23 @@ export const getAllCharacters = async(req, res) => {
 
 export const getCharacterById = async(req, res) => {
     try {
-        const personaje = await Character.findByPk(req.params.id)
+        const Character = await Character.findByPk(req.params.id);
         if(personaje) return res.status(200).json(personaje);
 
         return res.status(404).json({Message: "El personaje no existe en la base de datos."});
 
     } catch (error) {
-        res.status(500).json({message: error.message});
+        res.status(500).json({Message: error.message});
     }
 }
 
+export const deleteCharacter = async(req, res) =>{
+    try {
+        const deleted = await Character.destroy({where: {id: req.params.id}});
+        //es para hacer un delete al personaje que coincida con el id del personaje que deseamos eliminar
+
+        if(deleted = 0) return res.status(404).json({Message: "El personaje no fue encontrado"});
+    } catch (error) {
+      res.status(500).json({Message: error.message});  
+    }
+}
