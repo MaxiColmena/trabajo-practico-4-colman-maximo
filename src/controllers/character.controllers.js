@@ -1,8 +1,9 @@
-import { type } from "os";
 import Character from "../models/character.model.js";
 
+//Esta funcionalidad crea los personajes en nuestra base de datos
 export const createCharacter = async(req, res) => {
-    
+
+    //Esta funcionalidad elimina los espacios al principio y al final de las cadenas de texto(string)
     if(req.body){
         for (let value in req.body){
             if (typeof req.body[value] === "string"){
@@ -46,3 +47,16 @@ export const createCharacter = async(req, res) => {
         res.status(500).json({Message: error.message});
     }
 }
+
+//Esta funcionalidad trae a todos los personajes
+
+export const getAllCharacters = async(req, res) => {
+    try {
+        const personajes = await Character.findAll();
+
+        if(!personajes) return res.json({Message: error.message});
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}
+
