@@ -9,11 +9,11 @@ const Character = sequelize.define("character", {
     },
     name:{
         type: DataTypes.STRING,
-        allowNull: falso,
+        allowNull: false,
     },
     ki: {
         type: DataTypes.INTEGER,
-        allowNull: falso,
+        allowNull: false,
     },
     race: {
         type: DataTypes.STRING,

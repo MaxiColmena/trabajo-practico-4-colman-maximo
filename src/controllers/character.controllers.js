@@ -1,3 +1,4 @@
+import { where } from "sequelize";
 import Character from "../models/character.model.js";
 
 //Esta funcionalidad crea los personajes en nuestra base de datos
@@ -7,7 +8,7 @@ export const createCharacter = async(req, res) => {
     if(req.body){
         for (let value in req.body){
             if (typeof req.body[value] === "string"){
-                req.body[value] = req.body[value].thim();
+                req.body[value] = req.body[value].trim();
             }
         }
     }
@@ -54,7 +55,7 @@ export const getAllCharacters = async(req, res) => {
     try {
         const Characters = await Character.findAll();
 
-        if(!personajes) return res.json({Message: error.message});
+        if(!Characters) return res.json({Message: error.message});
     } catch (error) {
         res.status(500).json({message: error.message});
     }
@@ -67,6 +68,38 @@ export const getCharacterById = async(req, res) => {
 
         return res.status(404).json({Message: "El personaje no existe en la base de datos."});
 
+    } catch (error) {
+        res.status(500).json({Message: error.message});
+    }
+}
+
+export const updateCharacter = async(req, res) =>{
+    
+    
+     if(req.body){
+        for (let value in req.body){
+            if (typeof req.body[value] === "string"){
+                req.body[value] = req.body[value].trim();
+            }
+        }
+    }
+    
+    
+    const {name, ki, race, gender, description} = req.body;
+    
+    try {
+        if (name) {
+        const nameUnique = await Character.findOne({where: {name}});
+
+        if(nameUnique) return res.status(400).json({errorMessage: "'name' el nombre debe ser único por personaje."});
+        }
+
+        const [updated] = await Character.update({
+            name, ki, race, gender, description
+        },
+        {where: {id: req.params.id}}
+    );
+        
     } catch (error) {
         res.status(500).json({Message: error.message});
     }
