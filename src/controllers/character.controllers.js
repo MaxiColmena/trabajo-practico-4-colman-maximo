@@ -60,3 +60,15 @@ export const getAllCharacters = async(req, res) => {
     }
 }
 
+export const getCharacterById = async(req, res) => {
+    try {
+        const personaje = await Character.findByPk(req.params.id)
+        if(personaje) return res.status(200).json(personaje);
+
+        return res.status(404).json({Message: "El personaje no existe en la base de datos."});
+
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}
+
